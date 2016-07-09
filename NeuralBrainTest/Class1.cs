@@ -33,5 +33,59 @@ namespace NeuralBrainTest
 {
     public class NeuralSystem
     {
+        // Species have Genomes have Genes have fitness
+        //inputs to the net
+        //  define for the system to use
+        //  define getting input data
+        //pool
+        //  new
+        //  init
+        //  innovation
+        //species
+        //  speciesIsSameSpecies(genome, genome)
+        //  speciesGetFitness(species) ?
+        //  speciesAverageFitness(species)
+        //  speciesCull(isCanOnlyBeOne) // need to compare to iceFlow to see what they are thinking here
+        //  speciesBreedChild(species)
+        //  speciesIceflow(Species) // remove things not working - need one joke
+        //  speciesWeakRemoval()
+        //  speciesAddTo(child)
+        // getAverageFitnessTotal() ??nesc??
+        //genome
+        //  new
+        //  copy
+        //  fitness
+        //Gene
+        //  NEW
+        //  copy(gene)
+        //  disjoint(gene, gene)
+        //  weights(gene, gene)
+        //  isGeneLinked(genes, gene)
+        //neuron //inputs
+        //  new
+        //  RandomNeuron(genes, input)
+        //Network has neurons of inputs and outputs
+        //  network(genome)
+        //  evaluateNetwork(network, inputs)
+        //Crossover(genome, genome)
+        //mutatePoint(genome)
+        //mutateLink(genome, isBiased)
+        //mutateNode(genome)
+        //mutateEnableDisable(genome, isEnabled)
+        //mutate(genome)
+        //rank
+        //generation()
+        //  new
+        //Worker Utilities
+        //  clear input
+        //  initialize Run
+        //  evaluate current
+        //  display genome
+        //  write file
+        //  load file
+        //  save pool
+        //  load pool
+        //  sigmoid(#)
+        
     }
 }
