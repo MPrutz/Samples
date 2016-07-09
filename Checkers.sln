@@ -7,6 +7,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Checkers", "Checkers\Checke
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "UnitTestEngine", "UnitTestProject1\UnitTestEngine.csproj", "{453CF862-1F1D-4CF8-A9CE-FC6E88BA40F3}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "NeuralBrainTest", "NeuralBrainTest\NeuralBrainTest.csproj", "{906389BC-CAE4-426D-8D75-3D1F75802E89}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -21,6 +23,10 @@ Global
 		{453CF862-1F1D-4CF8-A9CE-FC6E88BA40F3}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{453CF862-1F1D-4CF8-A9CE-FC6E88BA40F3}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{453CF862-1F1D-4CF8-A9CE-FC6E88BA40F3}.Release|Any CPU.Build.0 = Release|Any CPU
+		{906389BC-CAE4-426D-8D75-3D1F75802E89}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{906389BC-CAE4-426D-8D75-3D1F75802E89}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{906389BC-CAE4-426D-8D75-3D1F75802E89}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{906389BC-CAE4-426D-8D75-3D1F75802E89}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
