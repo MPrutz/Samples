@@ -11,7 +11,6 @@ namespace UnitTestProject1
             Checkers.Engine e = new Checkers.Engine();
             System.UInt32 pass = 0; // it is important for bitboards to be unsigned 32 bit integers, so we enforce it here
 
-            Assert.AreEqual(pass, e.newGame());
             Assert.AreEqual(pass, e.newGame()); //initialization process returns 0 (no error)
             Assert.AreEqual(pass, e.getBlackKings()); //new board should have no kings
             Assert.AreEqual(pass, e.getWhiteKings());
@@ -26,6 +25,9 @@ namespace UnitTestProject1
             //----------
             Assert.AreEqual(whiteStart, whitePieces);
             Assert.AreEqual(blackStart, blackPieces);
+            //temp hack test
+            Assert.AreEqual(System.Convert.ToUInt32(0x00f00000), e.WhiteMoves());
+            Assert.AreEqual(System.Convert.ToUInt32(0x000f0000), e.BlackMoves());
             //==========
         }
     }

@@ -8,16 +8,20 @@ namespace Checkers
 {
     public class Engine
     {
+        class BitBoards {
+            public UInt32 white;
+            public UInt32 black;
+            public UInt32 kings;
+            public UInt32 empty;
+        }
+        private BitBoards cBoard = new BitBoards();
+
         // This set of magic numbers is a standard board
-        private const UInt32 BOARDSIZE  = 0x0008;
-        private const UInt32 WHITESTART = 0xfc00;
-        private const UInt32 BLACKSTART = 0x00cf;
-        private const UInt32 KINGSTART  = 0x0000;
-        private const UInt32 RESPONDACK = 0X0000;
-        //bitboards (bottom left to top right imagery)
-        private UInt32 whitePieces;
-        private UInt32 blackPieces;
-        private UInt32 kings;
+        private const UInt32 WHITESTART = 0xfff00000;
+        private const UInt32 BLACKSTART = 0x00000fff;
+        private const UInt32 KINGSTART  = 0x00000000;
+        private const UInt32 RESPONDACK = 0X00000000;
+
 
         // Bit board definition of bit positions 
         //  28  29  30  31      //
@@ -43,44 +47,77 @@ namespace Checkers
         //MASK_R5 = S[25] | S[26] | S[27] | S[17] | S[18] | S[19] | S[9] | S[10] | S[11];
         //MASK_x4 = all  - really unecessary, but for conceptual completeness it is here documented
 
-        private UInt32 Unoccupied() { return ~(whitePieces | blackPieces); }
     
         // for testing
         public UInt32 testGetBlackStartMask() { return BLACKSTART; } //return the mask used to make the board
         public UInt32 testGetWhiteStartMask() { return WHITESTART; }
-        
+
         // really - public
-        public UInt32 getWhitePieces() { return (whitePieces & ~(whitePieces & kings)); }
-        public UInt32 getBlackPieces() { return (blackPieces & ~(blackPieces & kings)); }
-        public UInt32 getWhiteKings() { return (whitePieces & kings); }
-        public UInt32 getBlackKings() { return (blackPieces & kings); }
-        public UInt32 getAnyWhitePieces() { return (whitePieces); }
-        public UInt32 getAnyBlackPieces() { return (blackPieces); }
+        public UInt32 getAllWhitePieces() { return (cBoard.white); }
+        public UInt32 getAllBlackPieces() { return (cBoard.black); }
+        public UInt32 getWhiteKings()     { return (cBoard.white & cBoard.kings); }
+        public UInt32 getBlackKings()     { return (cBoard.black & cBoard.kings); }
+        public UInt32 getWhitePieces()    { return (getAllWhitePieces() & ~getWhiteKings()); }
+        public UInt32 getBlackPieces()    { return (getAllBlackPieces() & ~getBlackKings()); }
 
-        public UInt32 WhiteMoves()
+        public UInt32 whiteMoves()
         {
-            UInt32 opensquares = Unoccupied();
+            UInt32 pieces = getWhitePieces();
+            UInt32 opensquares = cBoard.empty;
             UInt32 kings = getWhiteKings();
-            UInt32 movers = (opensquares << 4) & whitePieces;
-            
-                movers = (opensquares << 4) & whitePieces;
-                movers |= ((opensquares & MASK_L3) << 3) & whitePieces;
-                movers |= ((opensquares & MASK_L5) << 5) & whitePieces;
-                if (kings>0) //kings can move backwards so we have to check that direction
-                {
-                    movers |= (opensquares >> 4) & kings;
-                    movers |= ((opensquares & MASK_R3) >> 3) & kings;
-                    movers |= ((opensquares & MASK_R5) >> 5) & kings;
-                }
-                return movers;
+            UInt32 movers = 0;
+            movers |= (opensquares << 4);
+            movers |= ((opensquares & MASK_L3) << 3);
+            movers |= ((opensquares & MASK_L5) << 5);
+            movers &= pieces;
+            if (kings>0) //kings can move backwards so we have to check that direction
+            {
+                movers |= (opensquares >> 4) & kings;
+                movers |= ((opensquares & MASK_R3) >> 3) & kings;
+                movers |= ((opensquares & MASK_R5) >> 5) & kings;
+            }
+            return movers;
         }
+        public UInt32 blackMoves()
+        {
+            UInt32 pieces = getBlackPieces();
+            UInt32 opensquares = cBoard.empty;
+            UInt32 kings = getBlackKings();
+            UInt32 movers = 0;
+            movers |= (opensquares >> 4);
+            movers |= ((opensquares & MASK_L3) >> 3);
+            movers |= ((opensquares & MASK_L5) >> 5);
+            movers &= pieces;
+            if (kings > 0) //kings can move backwards so we have to check that direction
+            {
+                movers |= (opensquares << 4) & kings;
+                movers |= ((opensquares & MASK_R3) << 3) & kings;
+                movers |= ((opensquares & MASK_R5) << 5) & kings;
+            }
+            return movers;
+        }
+        private void setEmpties()
+        {
+            cBoard.empty = ~(cBoard.white | cBoard.black);
+        }
+        public UInt32 setBoard(UInt32 White, UInt32 Black, UInt32 Kings)
+        {
+            if (Kings != ((Kings & White) | (Kings & Black)) { return 1; }
+            if ((Black & White) > 0) { return 2; }
+            if (((Black & White) | Kings) > (Black & White)) { return 3; }
 
-
+            cBoard.white = White;
+            cBoard.black = Black;
+            cBoard.kings = Kings;
+            setEmpties();
+            return 0;
+        }
         public UInt32 newGame()
         {
-            whitePieces = WHITESTART;
-            blackPieces = BLACKSTART;
-            kings       = KINGSTART;
+            cBoard.white = WHITESTART;
+            cBoard.black = BLACKSTART;
+            cBoard.kings = KINGSTART;
+            setEmpties(); 
             //tbd counters etc when implemented
             return RESPONDACK; //I'd do a bool but everything else is int - so old school return 0 =true else #=message
         }
