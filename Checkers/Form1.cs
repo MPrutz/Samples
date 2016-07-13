@@ -26,7 +26,9 @@ namespace Checkers
 
         private void button2_Click(object sender, EventArgs e)
         {
-            var x = this.e.WhiteMoves();
+            //this.e.setBoard(0x00040000, 0x00606000, 0x00040000);
+            this.e.setBoard(0x00040000 | 0x00606000, 0x0, 0x00040000);
+            var x = this.e.moversForWhite();
             
         }
     }
